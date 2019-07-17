@@ -1,27 +1,21 @@
-import os
-import time
-import logging
-from locust import HttpLocust, TaskSet, task
-
-logger = logging.getLogger(__name__)
-logger.setLevel(os.getenv("LOCUST_LOG_LEVEL", "INFO").upper())
+from locust import Locust, HttpLocust, TaskSet, task
 
 class DummyTaskSet(TaskSet):
 
-    @task
-    def get_dummy_datetime(self):
-        time_start = time.time()
-        response = self.client.get("/datetime")
-        time_end = time.time()
-        logger.info("Response - URL: {url}. Status code: {status}. "
-                    "Latency: {duration}".format(url=response.url,
-                                                 status=response.status_code,
-                                                 duration=round(time_end - time_start, 3)))
+    @task(1)
+    def find(self):
+        header = {'content-type': 'application/json'}
+        payload = {
+            "access_token": "FEF16453FBF28DE0F4CD4597E04E3189F0B769A74A4E0201B6",
+            "nonce_str": "abc123",
+            "sign": "DCD972098347772E52FD70187A43FC88"
+        }
+
+        self.client.post("/findAll", json=payload, headers=header)
 
 
 class DummyLoadTester(HttpLocust):
-    host = os.getenv("LOCUST_TARGET_HOST", "localhost:8080")
+    host = "https://stage4-iioapi.gashpoint.com/public/api/position"
     task_set = DummyTaskSet
     min_wait = 5000
     max_wait = 15000
-
