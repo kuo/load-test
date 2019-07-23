@@ -26,7 +26,7 @@ spec:
             - name: LOCUST_MODE
               value: worker
             - name: LOCUST_MASTER
-              value: locust master ip, EX: 10.111.10.111
+              value: locust master 5557 port ip, EX: 10.111.10.111
             - name: LOCUST_LOG_LEVEL
               value: DEBUG
             - name: LOCUST_TARGET_HOST
