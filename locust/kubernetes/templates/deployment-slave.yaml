@@ -1,0 +1,33 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: default
+  name: locust-worker-deployment
+  labels:
+    name: locust
+    role: worker
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: locust
+      role: worker
+  template:
+    metadata:
+      labels:
+        name: locust
+        role: worker
+    spec:
+      containers:
+        - name: locust
+          image: image file位置，EX: gcr.io/<PROJECT_ID>/locust:latest
+          imagePullPolicy: Always
+          env:
+            - name: LOCUST_MODE
+              value: worker
+            - name: LOCUST_MASTER
+              value: locust master ip, EX: 10.111.10.111
+            - name: LOCUST_LOG_LEVEL
+              value: DEBUG
+            - name: LOCUST_TARGET_HOST
+              value: API HOST 位置，EX: https://stage4-iioapi.gashpoint.com/public/api/position
