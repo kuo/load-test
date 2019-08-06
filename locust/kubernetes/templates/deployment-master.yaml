@@ -1,34 +1,27 @@
-kind: Deployment
-apiVersion: apps/v1
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
 metadata:
-  namespace: default
-  name: locust-master-deployment
+  name: locust-master
   labels:
-    name: locust
-    role: master
+    name: locust-master
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: locust
-      role: master
+      app: locust-master
   template:
     metadata:
       labels:
-        name: locust
-        role: master
+        app: locust-master
     spec:
       containers:
-        - name: locust
-          image: image file位置，EX: gcr.io/<PROJECT_ID>/locust:latest
-          imagePullPolicy: Always
+        - name: locust-master
+          image: 映像檔位置
           env:
             - name: LOCUST_MODE
               value: master
-            - name: LOCUST_LOG_LEVEL
-              value: DEBUG
-            - name: LOCUST_TARGET_HOST
-              value: API HOST 位置，EX: https://stage4-iioapi.gashpoint.com/public/api/position
+            - name: TARGET_HOST
+              value: 被測試API HOST
           ports:
             - name: loc-master-web
               containerPort: 8089
